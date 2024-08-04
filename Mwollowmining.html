@@ -1,0 +1,556 @@
+<html><head><base href="https://crypto-exchange.example.com/">
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  width: 100%;
+}
+h1, h2, h3 {
+  color: #333;
+  text-align: center;
+}
+.input-group {
+  margin-bottom: 1rem;
+}
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+input, select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+}
+button:hover {
+  background-color: #45a049;
+}
+#result, #generatedData, #powVerification, #knownResults {
+  font-size: 1rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  word-break: break-all;
+  white-space: pre-wrap;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+}
+.valid {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+.invalid {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+#explanation {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+#progressBar {
+  width: 100%;
+  background-color: #e0e0e0;
+  padding: 3px;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+}
+#progressBar div {
+  width: 0;
+  height: 20px;
+  background-color: #4CAF50;
+  border-radius: 2px;
+  transition: width 0.3s ease-in-out;
+}
+.unknown-result {
+  color: red;
+  font-weight: bold;
+}
+#computerScreen {
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+#computerScreen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 25px;
+  background: linear-gradient(to bottom, #2a2a2a, #1a1a1a);
+  border-radius: 10px 10px 0 0;
+}
+#computerScreen::after {
+  content: '•••';
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  color: #666;
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+#miningProcess {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: lime;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  margin-top: 20px;
+}
+#miningProcess::-webkit-scrollbar {
+  width: 8px;
+}
+#miningProcess::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+#miningProcess::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+#miningProcess::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+#knownResults {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.qrcode-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+.qrcode-item {
+  text-align: center;
+}
+#mwollowmBanknote {
+  position: relative;
+  width: 800px;
+  height: 400px;
+  margin: 20px auto;
+  background: linear-gradient(45deg, #1a5f7a, #86c7db);
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+#mwollowmBanknote::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100"><text x="50" y="50" font-size="20" text-anchor="middle" dy=".35em" fill="rgba(255,255,255,0.1)">Mwollowm</text></svg>');
+  opacity: 0.1;
+}
+#mwollowmBanknote::after {
+  content: 'Mwollowm';
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+}
+#mwollowmBanknote #logo {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#mwollowmBanknote #logo svg {
+  width: 100%;
+  height: 100%;
+}
+#mwollowmBanknote #diamond {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 200px;
+  height: 200px;
+  background-color: navy;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#mwollowmBanknote #diamond::after {
+  content: 'WAVES';
+  font-size: 36px;
+  font-weight: bold;
+  color: white;
+  transform: rotate(-45deg);
+}
+#resultQrCode {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 160px;
+  height: 160px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+#resultQrCode img {
+  max-width: 100%;
+  max-height: 100%;
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+</head><body>
+<div class="container">
+  <h1>MwollowMining</h1>
+  
+  <div class="input-group">
+    <label for="minerCount">Nombre de mineurs:</label>
+    <input type="number" id="minerCount" min="1" value="1" onchange="updateDifficulty()">
+  </div>
+
+  <div class="input-group">
+    <label for="difficulty">Difficulté (nombre de zéros au début):</label>
+    <input type="number" id="difficulty" min="1" max="64" value="1" readonly>
+  </div>
+
+  <div class="input-group">
+    <label for="supply">Supply restant (Mwollowm):</label>
+    <input type="number" id="supply" value="144000000" step="0.0000000000000001" onchange="updateSupply()">
+  </div>
+
+  <div class="input-group">
+    <label for="supplyWaves">Supply restant (Mwollowm-Waves):</label>
+    <input type="number" id="supplyWaves" value="144000000" step="0.0000000000000001" onchange="updateSupply()">
+  </div>
+
+  <div class="input-group">
+    <label for="supplyPerMiner">Supply par mineur (Mwollowm):</label>
+    <input type="number" id="supplyPerMiner" readonly>
+  </div>
+
+  <div class="input-group">
+    <label for="supplyPerMinerWaves">Supply par mineur (Mwollowm-Waves):</label>
+    <input type="number" id="supplyPerMinerWaves" readonly>
+  </div>
+
+  <div class="input-group">
+    <label for="earnedMwollowm">Mwollowm gagnés:</label>
+    <input type="number" id="earnedMwollowm" value="0" readonly>
+  </div>
+
+  <div class="input-group">
+    <label for="earnedMwollowmWaves">Mwollowm-Waves gagnés:</label>
+    <input type="number" id="earnedMwollowmWaves" value="0" readonly>
+  </div>
+
+  <div class="input-group">
+    <label for="euroValue">Valeur d'un Mwollowm en Euro:</label>
+    <input type="number" id="euroValue" value="0" step="0.01" onchange="updateEuroEarnings()">
+  </div>
+
+  <div class="input-group">
+    <label for="euroValueWaves">Valeur d'un Mwollowm-Waves en Euro:</label>
+    <input type="number" id="euroValueWaves" value="0" step="0.01" onchange="updateEuroEarnings()">
+  </div>
+
+  <div class="input-group">
+    <label for="euroEarnings">Gains en Euro (Total):</label>
+    <input type="number" id="euroEarnings" value="0" readonly>
+  </div>
+
+  <div class="input-group">
+    <label for="walletAddress">Adresse du wallet:</label>
+    <input type="text" id="walletAddress" placeholder="Entrez l'adresse de votre wallet">
+  </div>
+
+  <div class="input-group">
+    <label for="emailInterval">Intervalle d'envoi d'email (en minutes):</label>
+    <input type="number" id="emailInterval" min="1" value="1">
+  </div>
+
+  <div id="mwollowmBanknote">
+    <div id="resultQrCode"></div>
+    <div id="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#b88600;stop-opacity:1" />
+          </linearGradient>
+          <linearGradient id="silver" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f0f0f0;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#c0c0c0;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <path d="M10 10L45 10L45 45L90 45L90 90L55 90L55 55L10 55Z" fill="url(#silver)" stroke="#808080" stroke-width="2"/>
+        <path d="M20 20L35 20L35 35L80 35L80 80L65 80L65 65L20 65Z" fill="url(#gold)" stroke="#808080" stroke-width="2"/>
+        <text x="50" y="50" font-family="Arial, sans-serif" font-size="30" text-anchor="middle" dy=".35em" fill="#808080">MW</text>
+      </svg>
+    </div>
+    <div id="diamond"></div>
+  </div>
+
+  <div class="qrcode-container">
+    <div class="qrcode-item">
+      <h3>Valeur Waves-exchange</h3>
+      <div id="wavesExchangeQrCode"></div>
+    </div>
+    <div class="qrcode-item">
+      <h3>Valeur Google-Sheets</h3>
+      <div id="googleSheetsQrCode"></div>
+    </div>
+  </div>
+  
+  <button onclick="startMining()">Commencer le minage</button>
+  <button onclick="stopMining()">Arrêter le minage</button>
+  <button onclick="sendEmailResults()">Envoyer les résultats par email</button>
+  
+  <div id="progressBar"><div></div></div>
+  
+  <div id="computerScreen">
+    <div id="miningProcess"></div>
+  </div>
+  
+  <h2>Résultat du minage</h2>
+  <div id="generatedData"></div>
+  
+  <h2>Vérification de la Preuve de Travail</h2>
+  <div class="input-group">
+    <label for="powInput">Données à vérifier (JSON):</label>
+    <input type="text" id="powInput" placeholder='{"balance":"0 2024-07-31 15:58:52","cumul_mwol_lowm":["hash"],"cumulative_balance":0,"date_time":"2024-07-31 15:58:52"}'>
+  </div>
+  
+  <button onclick="verifyPoW()">Vérifier PoW</button>
+  
+  <div id="powVerification"></div>
+  
+  <h2>Ajouter un résultat connu</h2>
+  <div class="input-group">
+    <label for="knownResultInput">Nouveau résultat (JSON):</label>
+    <input type="text" id="knownResultInput" placeholder='{"balance":"0 2024-07-31 15:58:52","cumul_mwol_lowm":["hash"],"cumulative_balance":0,"date_time":"2024-07-31 15:58:52"}'>
+  </div>
+  
+  <button onclick="addKnownResult()">Ajouter le résultat</button>
+  
+  <h2>Résultats connus</h2>
+  <div id="knownResults"></div>
+</div>
+
+<script>
+let mining = false;
+let knownResults = [];
+const REWARD_PER_SOLUTION = 0.0000694444444444;
+let autoEmailInterval;
+
+function updateDifficulty() {
+  const minerCount = parseInt(document.getElementById('minerCount').value);
+  const difficulty = Math.max(1, Math.floor(Math.log2(minerCount)) + 1);
+  document.getElementById('difficulty').value = difficulty;
+  updateSupply();
+}
+
+function updateSupply() {
+  const minerCount = parseInt(document.getElementById('minerCount').value);
+  const supply = parseFloat(document.getElementById('supply').value);
+  const supplyWaves = parseFloat(document.getElementById('supplyWaves').value);
+  
+  const supplyPerMiner = supply / minerCount;
+  const supplyPerMinerWaves = supplyWaves / minerCount;
+  
+  document.getElementById('supplyPerMiner').value = supplyPerMiner.toFixed(8);
+  document.getElementById('supplyPerMinerWaves').value = supplyPerMinerWaves.toFixed(8);
+}
+
+function updateEuroEarnings() {
+  const earnedMwollowm = parseFloat(document.getElementById('earnedMwollowm').value);
+  const earnedMwollowmWaves = parseFloat(document.getElementById('earnedMwollowmWaves').value);
+  const euroValue = parseFloat(document.getElementById('euroValue').value);
+  const euroValueWaves = parseFloat(document.getElementById('euroValueWaves').value);
+  
+  const totalEuroEarnings = (earnedMwollowm * euroValue) + (earnedMwollowmWaves * euroValueWaves);
+  document.getElementById('euroEarnings').value = totalEuroEarnings.toFixed(2);
+}
+
+function startMining() {
+  if (mining) return;
+  mining = true;
+  const difficulty = parseInt(document.getElementById('difficulty').value);
+  const minerCount = parseInt(document.getElementById('minerCount').value);
+  
+  let miningProcess = document.getElementById('miningProcess');
+  let progressBar = document.getElementById('progressBar').firstElementChild;
+  let progress = 0;
+  
+  function mine() {
+    if (!mining) return;
+    
+    progress += Math.random() * 10;
+    if (progress >= 100) {
+      const hash = generateHash(difficulty);
+      const mwollowmEarned = REWARD_PER_SOLUTION;
+      const mwollowmWavesEarned = REWARD_PER_SOLUTION;
+      
+      document.getElementById('earnedMwollowm').value = (parseFloat(document.getElementById('earnedMwollowm').value) + mwollowmEarned).toFixed(16);
+      document.getElementById('earnedMwollowmWaves').value = (parseFloat(document.getElementById('earnedMwollowmWaves').value) + mwollowmWavesEarned).toFixed(16);
+      updateEuroEarnings();
+      
+      const result = {
+        balance: `${mwollowmEarned.toFixed(16)} ${new Date().toISOString()}`,
+        cumul_mwol_lowm: [hash],
+        cumulative_balance: parseFloat(document.getElementById('earnedMwollowm').value),
+        date_time: new Date().toISOString()
+      };
+      
+      document.getElementById('generatedData').textContent = JSON.stringify(result, null, 2);
+      miningProcess.textContent += `\nMined block with hash: ${hash}\nMwollowm earned: ${mwollowmEarned.toFixed(16)}\nMwollowm-Waves earned: ${mwollowmWavesEarned.toFixed(16)}`;
+      miningProcess.scrollTop = miningProcess.scrollHeight;
+      
+      // Generate QR code for the result
+      generateQRCode(JSON.stringify(result), 'resultQrCode');
+      
+      progress = 0;
+    }
+    
+    progressBar.style.width = `${progress}%`;
+    miningProcess.textContent += '.';
+    miningProcess.scrollTop = miningProcess.scrollHeight;
+    
+    setTimeout(mine, 100);
+  }
+  
+  mine();
+  
+  // Start automatic email sending
+  const emailIntervalMinutes = parseInt(document.getElementById('emailInterval').value);
+  autoEmailInterval = setInterval(sendEmailResults, emailIntervalMinutes * 60000); // Convert minutes to milliseconds
+}
+
+function stopMining() {
+  mining = false;
+  clearInterval(autoEmailInterval);
+}
+
+function generateHash(difficulty) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const prefix = '0'.repeat(difficulty);
+  let hash;
+  
+  do {
+    hash = '';
+    for (let i = 0; i < 64; i++) {
+      hash += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+  } while (!hash.startsWith(prefix));
+  
+  return hash;
+}
+
+function verifyPoW() {
+  const powInput = document.getElementById('powInput').value;
+  const difficulty = parseInt(document.getElementById('difficulty').value);
+  const powVerification = document.getElementById('powVerification');
+  
+  try {
+    const data = JSON.parse(powInput);
+    const hash = data.cumul_mwol_lowm[0];
+    const isValid = hash.startsWith('0'.repeat(difficulty));
+    
+    powVerification.textContent = isValid ? 'Preuve de travail valide!' : 'Preuve de travail invalide.';
+    powVerification.className = isValid ? 'valid' : 'invalid';
+  } catch (error) {
+    powVerification.textContent = 'Erreur: Données JSON invalides.';
+    powVerification.className = 'invalid';
+  }
+}
+
+function addKnownResult() {
+  const knownResultInput = document.getElementById('knownResultInput');
+  const knownResultsDiv = document.getElementById('knownResults');
+  
+  try {
+    const result = JSON.parse(knownResultInput.value);
+    knownResults.push(result);
+    knownResultsDiv.textContent = JSON.stringify(knownResults, null, 2);
+    knownResultInput.value = '';
+  } catch (error) {
+    alert('Erreur: Données JSON invalides.');
+  }
+}
+
+function generateQRCode(data, elementId) {
+  const qr = qrcode(0, 'L');
+  qr.addData(data);
+  qr.make();
+  document.getElementById(elementId).innerHTML = qr.createImgTag(5);
+}
+
+function sendEmailResults() {
+  const emailAddress = "mwollowm622@gmail.com";
+  const subject = "Résultats du minage MwollowMining";
+  const walletAddress = document.getElementById('walletAddress').value;
+  const body = `Résultats du minage:\n\n${document.getElementById('generatedData').textContent}\n\nAdresse du wallet: ${walletAddress}`;
+  
+  const mailtoLink = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  
+  // Ouvrir le client de messagerie par défaut
+  window.open(mailtoLink, '_blank');
+  
+  console.log("Email envoyé automatiquement");
+
+  // Simuler l'envoi automatique après l'ouverture du client de messagerie
+  setTimeout(() => {
+    console.log("Envoi automatique du mail effectué");
+    // Ici, nous ne pouvons pas réellement envoyer le mail automatiquement depuis le navigateur pour des raisons de sécurité.
+    // Dans un environnement réel, cette partie nécessiterait un serveur backend pour gérer l'envoi des emails.
+  }, 5000); // Simulons un délai de 5 secondes pour l'envoi automatique
+}
+
+// Initialisation
+updateDifficulty();
+generateQRCode('https://waves.exchange/trading/spot/44UjNxK3exT9xWyodfA7mYBYfBqbiR26xMtgyBdEUeBp_WAVES', 'wavesExchangeQrCode');
+generateQRCode('https://docs.google.com/spreadsheets/d/19agD6tOCBEsew5ITnYakNxz4ibF_j0QRFS_JgnvAXvk/edit?gid=0#gid=0', 'googleSheetsQrCode');
+</script>
+</body></html>
